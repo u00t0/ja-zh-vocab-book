@@ -81,17 +81,37 @@ class PagePrp(tk.Frame):
         ttk.Frame.configure(self)
         ttk.Button(self, text="単語帳データを選ぶ",
                    command=lambda: file_read()).grid(row=0, column=0)
-        ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=0, column=1)
+        ttk.Button(self, text="Go to Next", command=lambda: master.switch_frame(
+            PageAns)).grid(row=0, column=1)
 
 
 class PageAns(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        ttk.Label(self, text="Page one").grid(row=0, column=0)
-        ttk.Button(self, text="Go back to start page",
-                   command=lambda: master.switch_frame(StartPage)).grid(row=0, column=1)
+        ttk.Label(self, text="漢字").grid(row=0, column=0)
+        ttk.Label(self, text="拼音").grid(row=1, column=0)
+        ttk.Label(self, text="和訳").grid(row=2, column=0)
+
+        kanji = "あああ"
+        pinyin = "ボタンを押してスタート"
+        mean = "あああ"
+
+        def showSome(i):
+            i += 1
+            if i >= 3:
+                ttk.Label(self, text=kanji).grid(row=0, column=1)
+                ttk.Label(self, text=pinyin).grid(row=1, column=1)
+                ttk.Label(self, text=mean).grid(row=2, column=1)
+            elif i >= 2:
+                ttk.Label(self, text=kanji).grid(row=0, column=1)
+                ttk.Label(self, text=pinyin).grid(row=1, column=1)
+            else:
+                ttk.Label(self, text=kanji).grid(row=0, column=1)
+
+        i = 0
+        ttk.Button(self, text="Next", command=lambda: showSome(i)
+                   ).grid(row=1, column=2)
 
 
 class PageMak(tk.Frame):
