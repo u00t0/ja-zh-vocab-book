@@ -56,8 +56,6 @@ def showSome(i):
     else:
         ttk.Label(self, text=kanji).grid(row=0, column=1)
 
-    return i
-
 
 class StartPage(tk.Frame):
     def __init__(self, master=None):
@@ -104,7 +102,7 @@ class PageAns(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        ttk.Label(self, text="漢字").grid(row=0, column=0)
+        ttk.Label(self, text="漢字", ).grid(row=0, column=0)
         ttk.Label(self, text="拼音").grid(row=1, column=0)
         ttk.Label(self, text="和訳").grid(row=2, column=0)
 
@@ -112,17 +110,36 @@ class PageAns(tk.Frame):
         pinyin = "ボタンを押してスタート"
         mean = "あああ"
 
-        ttk.Button(self, text="Next", command=lambda: ).grid(row=1, column=2)
+        ttk.Button(self, text="Next", command=lambda: master.switch_frame(
+            PageAns)).grid(row=1, column=2)
 
 
 class PageMak(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        ttk.Label(self, text="Page two", font=(
+        ttk.Label(self, text="単語帳", font=(
             'Helvetica', 18, "bold")).grid(row=0, column=0)
+        ttk.Label(self, text="漢字", font=(
+            'Helvetica', 18, "bold")).grid(row=1, column=0)
+        ttk.Label(self, text="拼音", font=(
+            'Helvetica', 18, "bold")).grid(row=2, column=0)
+        ttk.Label(self, text="和訳", font=(
+            'Helvetica', 18, "bold")).grid(row=3, column=0)
+
+        var1 = tk.StringVar()
+        var2 = tk.StringVar()
+        var3 = tk.StringVar()
+
+        ttk.Entry(self, textvariable=var1,
+                  width=20).grid(row=1, column=1)
+        ttk.Entry(self, textvariable=var2,
+                  width=20).grid(row=2, column=1)
+        ttk.Entry(self, textvariable=var3,
+                  width=20).grid(row=3, column=1)
+
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=0, column=1)
+            StartPage)).grid(row=2, column=4)
 
 
 if __name__ == "__main__":
