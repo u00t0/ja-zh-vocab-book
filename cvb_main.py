@@ -1,6 +1,28 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+import tkinter.filedialog
+
+
+def file_read():
+
+    # ファイル選択ダイアログの表示
+    file_path = tkinter.filedialog.askopenfilename()
+
+    if len(file_path) != 0:
+        # ファイルが選択された場合
+
+        # ファイルを開いて読み込んでdataに格納
+        f = open(file_path)
+        data = f.read()
+        f.close()
+    else:
+        # ファイル選択がキャンセルされた場合
+
+        # dataは空にする
+        data = ''
+
+    return data
 
 
 class SampleApp(tk.Tk):
@@ -33,12 +55,12 @@ class StartPage(tk.Frame):
         ttk.Button(
             self,
             image=self.icon1,
-            command=lambda: master.switch_frame(PageOne)
+            command=lambda: master.switch_frame(PagePrp)
         ).grid(row=0, column=0)
         ttk.Button(
             self,
             image=self.icon2,
-            command=lambda: master.switch_frame(PageOne)
+            command=lambda: master.switch_frame(PageMak)
         ).grid(row=0, column=1)
         ttk.Label(
             self,
@@ -50,24 +72,33 @@ class StartPage(tk.Frame):
         ).grid(row=1, column=1)
 
 
-class PageOne(tk.Frame):
+class PagePrp(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        ttk.Label(self, text="Page one", font=(
-            'Helvetica', 18, "bold")).grid(row=0, column=0)
+        ttk.Button(self, text="単語帳データを選ぶ",
+                   command=lambda: file_read()).grid(row=0, column=0)
+        ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
+            StartPage)).grid(row=0, column=1)
+
+
+class PageAns(tk.Frame):
+    def __init__(self, master):
+        ttk.Frame.__init__(self, master)
+        ttk.Frame.configure(self)
+        ttk.Label(self, text="Page one").grid(row=0, column=0)
         ttk.Button(self, text="Go back to start page",
                    command=lambda: master.switch_frame(StartPage)).grid(row=0, column=1)
 
 
-class PageTwo(tk.Frame):
+class PageMak(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
         ttk.Label(self, text="Page two", font=(
             'Helvetica', 18, "bold")).grid(row=0, column=0)
-        ttk.Button(self, text="Go back to start page",
-                   command=lambda: master.switch_frame(StartPage)).grid(row=0, column=1)
+        ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
+            StartPage)).grid(row=0, column=1)
 
 
 if __name__ == "__main__":
