@@ -8,8 +8,6 @@ from gtts import gTTS
 
 
 class VocabList(list):
-    # def __init__(self, default_list=[]):
-    #     self = super().__init__(default_list)
     def input_zh_char(self):
         while True:
             # [zh_char入力画面]
