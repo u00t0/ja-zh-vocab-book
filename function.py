@@ -29,7 +29,6 @@ def csv_shuffle_read(filename):  # str
         random_order = random.sample(range(len(pure_list)), len(pure_list))
         vocab_list = []
         vocab_list += [pure_list[num] for num in random_order]
-        print(vocab_list)
     return vocab_list, random_order
 
 

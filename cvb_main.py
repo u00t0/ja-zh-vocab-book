@@ -6,13 +6,14 @@ import pinyin as pin
 import function
 import re
 
-vocab_list = [[]]
+vocab_list = []
 index = 0
 filename = ""
 random_order = []
 
 
 def file_read():
+    global vocab_list
     fTyp = [("", "*")]
     iDir = './imported_csv'
     # ファイル選択ダイアログの表示
@@ -30,6 +31,8 @@ def file_read():
     print(filename)
     print("OK5")
     vocab_list, random_order = function.csv_shuffle_read(filename)
+    print('fread')
+    print(vocab_list)
 
 
 class SampleApp(tk.Tk):
@@ -46,12 +49,15 @@ class SampleApp(tk.Tk):
             self._frame.destroy()
         self._frame = new_frame
         self._frame.grid()
+        print(vocab_list)
 
 
 class StartPage(tk.Frame):
     def __init__(self, master=None):
         # 初期化
-        vocab_list = [[]]
+        global vocab_list, index
+
+        vocab_list = []
         index = 0
 
         tk.Frame.__init__(self, master)
@@ -89,7 +95,8 @@ class PagePrp(tk.Frame):
         ttk.Frame.configure(self)
         ttk.Button(self, text="単語帳データを選ぶ",
                    command=lambda: file_read()).grid(row=0, column=0)
-
+        print('prp')
+        print(vocab_list)
         ttk.Button(self, text="Go to Next", command=lambda: master.switch_frame(
             PageAns)).grid(row=1, column=0)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
@@ -99,31 +106,42 @@ class PagePrp(tk.Frame):
 class PageAns(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
+        print('Ans')
+        print(vocab_list)
         ttk.Frame.configure(self)
+        print('Ans')
+        print(vocab_list)
         ttk.Label(self, text="漢字").grid(row=0, column=0)
         ttk.Label(self, text="拼音").grid(row=1, column=0)
         ttk.Label(self, text="和訳").grid(row=2, column=0)
 
         ord = 0
+        print('Ans')
         print(vocab_list)
 
-        kanji = tk.StringVar('')
-        pinyin = tk.StringVar('')
-        mean = tk.StringVar('')
+        kanji = tk.StringVar()
+        pinyin = tk.StringVar()
+        mean = tk.StringVar()
 
         def show_kanji():
-            kanji = vocab_list[ord][0]
+            kanji.set(vocab_list[ord][0])
+            LabelK = ttk.Label(self, text=kanji.get())
+            LabelK.grid(row=0, column=1)
 
         def show_pinyin():
-            pinyin = vocab_list[ord][1]
+            pinyin.set(vocab_list[ord][1])
+            LabelP = ttk.Label(self, text=pinyin.get())
+            LabelP.grid(row=1, column=1)
 
         def show_mean():
-            mean = vocab_list[ord][2]
+            mean.set(vocab_list[ord][2])
+            LabelM = ttk.Label(self, text=mean.get())
+            LabelM.grid(row=2, column=1)
 
         def next():
-            kanji = ''
-            pinyin = ''
-            mean = ''
+            kanji.set('')
+            pinyin.set('')
+            mean.set('')
             ord += 1
 
         def keycall1(event):
@@ -135,9 +153,9 @@ class PageAns(tk.Frame):
         def keycall3(event):
             show_pinyin()
 
-        LabelK = ttk.Label(self, text=kanji)
-        LabelP = ttk.Label(self, text=pinyin)
-        LabelM = ttk.Label(self, text=mean)
+        LabelK = ttk.Label(self, text=kanji.get())
+        LabelP = ttk.Label(self, text=pinyin.get())
+        LabelM = ttk.Label(self, text=mean.get())
         LabelK.grid(row=0, column=1)
         LabelP.grid(row=1, column=1)
         LabelM.grid(row=2, column=1)
@@ -162,6 +180,7 @@ class PageAns(tk.Frame):
 
 class SetChar(tk.Frame):
     def __init__(self, master):
+        global index
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
         ttk.Label(self, text="単語帳制作", font=(
@@ -172,12 +191,16 @@ class SetChar(tk.Frame):
         var = tk.StringVar()
 
         def next_vocab():
-            vocab_list[index][0] = var
+            global index
+            vocab_list.append([])
+            vocab_list[index].append(var.get())
             index += 1
             master.switch_frame(SetChar)
 
         def move_to_pinyin():
-            vocab_list[index][0] = var
+            global index
+            vocab_list.append([])
+            vocab_list[index].append(var.get())
             index = 0
             master.switch_frame(CheckPinyin)
 
@@ -193,9 +216,10 @@ class SetChar(tk.Frame):
 
 class CheckPinyin(tk.Frame):
     def __init__(self, master):
+        global vocab_list, index
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-
+        print('aaa'+str(index))
         pinyin = pin.get(vocab_list[index][0])
         num_pinyin = pin.get(vocab_list[index][0], format='numerical')
         var = tk.StringVar()
@@ -209,15 +233,16 @@ class CheckPinyin(tk.Frame):
             'Helvetica', 18, "bold")).grid(row=2, column=0)
 
         def next_vocab():
-            vocab_list[index][1] = var
+            global index
+            vocab_list[index].append(var.get())
             index += 1
             master.switch_frame(CheckPinyin)
 
         def move_to_pinyin():
-            vocab_list[index][1] = var
+            global index
+            vocab_list[index].append(var.get())
             index = 0
             master.switch_frame(InputMeaning)
-
         ttk.Entry(self, textvariable=var,
                   width=20).grid(row=1, column=1, pady=10)
         ttk.Button(self, text="OK", command=lambda: next_vocab()
@@ -230,8 +255,12 @@ class CheckPinyin(tk.Frame):
 
 class InputMeaning(tk.Frame):
     def __init__(self, master):
+        global index
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
+
+        var = tk.StringVar()
+
         ttk.Label(self, text="単語帳制作", font=(
             'Helvetica', 18, "bold")).grid(row=0, column=0)
         ttk.Label(self, text="日本語を入力してください", font=(
@@ -240,16 +269,16 @@ class InputMeaning(tk.Frame):
             'Helvetica', 18, "bold")).grid(row=2, column=0)
 
         def next_vocab():
-            vocab_list[index][2] = var
+            global index
+            vocab_list[index].append(var.get())
             index += 1
             master.switch_frame(InputMeaning)
 
         def move_to_pinyin():
-            vocab_list[index][2] = var
+            global index
+            vocab_list[index].append(var.get())
             index = 0
-
             master.switch_frame(StartPage)
-
         ttk.Entry(self, textvariable=var,
                   width=20).grid(row=1, column=1, pady=10)
         ttk.Button(self, text="OK", command=lambda: next_vocab()
