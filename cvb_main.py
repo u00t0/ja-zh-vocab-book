@@ -44,6 +44,21 @@ class SampleApp(tk.Tk):
         self._frame.grid()
 
 
+def showSome(i):
+    i += 1
+    if i >= 3:
+        ttk.Label(self, text=kanji).grid(row=0, column=1)
+        ttk.Label(self, text=pinyin).grid(row=1, column=1)
+        ttk.Label(self, text=mean).grid(row=2, column=1)
+    elif i >= 2:
+        ttk.Label(self, text=kanji).grid(row=0, column=1)
+        ttk.Label(self, text=pinyin).grid(row=1, column=1)
+    else:
+        ttk.Label(self, text=kanji).grid(row=0, column=1)
+
+    return i
+
+
 class StartPage(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
@@ -97,21 +112,7 @@ class PageAns(tk.Frame):
         pinyin = "ボタンを押してスタート"
         mean = "あああ"
 
-        def showSome(i):
-            i += 1
-            if i >= 3:
-                ttk.Label(self, text=kanji).grid(row=0, column=1)
-                ttk.Label(self, text=pinyin).grid(row=1, column=1)
-                ttk.Label(self, text=mean).grid(row=2, column=1)
-            elif i >= 2:
-                ttk.Label(self, text=kanji).grid(row=0, column=1)
-                ttk.Label(self, text=pinyin).grid(row=1, column=1)
-            else:
-                ttk.Label(self, text=kanji).grid(row=0, column=1)
-
-        i = 0
-        ttk.Button(self, text="Next", command=lambda: showSome(i)
-                   ).grid(row=1, column=2)
+        ttk.Button(self, text="Next", command=lambda: ).grid(row=1, column=2)
 
 
 class PageMak(tk.Frame):
