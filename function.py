@@ -2,7 +2,6 @@ import os
 import csv
 import random
 import pinyin as pin
-import appkit
 from playsound import playsound
 from gtts import gTTS
 # https://pypi.org/project/pinyin/
