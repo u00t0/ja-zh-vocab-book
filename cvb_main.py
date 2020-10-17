@@ -6,8 +6,11 @@ import tkinter.filedialog
 
 def file_read():
 
+    fTyp = [("", "*")]
+    iDir = './imported_csv'
     # ファイル選択ダイアログの表示
-    file_path = tkinter.filedialog.askopenfilename()
+    file_path = tkinter.filedialog.askopenfilename(
+        filetypes=fTyp, initialdir=iDir)
 
     if len(file_path) != 0:
         # ファイルが選択された場合
