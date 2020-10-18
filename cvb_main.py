@@ -108,24 +108,20 @@ class PageAns(tk.Frame):
 
         ord = 0
 
-        self.kanji = tk.StringVar()
-        self.pinyin = tk.StringVar()
-        self.mean = tk.StringVar()
+        kanji = tk.StringVar()
+        pinyin = tk.StringVar()
+        mean = tk.StringVar()
 
-        self.kanji.set(' ')
-        self.pinyin.set(' ')
-        self.mean.set(' ')
+        kanji.set(' ')
+        pinyin.set(' ')
+        mean.set(' ')
 
-        def next_sub(x):
-            x += 1
-
-            if(x == len(vocab_list)):
-                ret = tk.messagebox.showinfo("お疲れさまでした", "終了しました")
-
-                if ret == ok:
-                    master.switch_frame(StartPage)
-
-            return x
+        LabelK = ttk.Label(
+            self, text=kanji.get()).grid(row=0, column=1)
+        LabelP = ttk.Label(
+            self, text=pinyin.get()).grid(row=1, column=1)
+        LabelM = ttk.Label(
+            self, text=mean.get()).grid(row=2, column=1)
 
         def keycall1(event):
             show_kanji()
@@ -136,33 +132,42 @@ class PageAns(tk.Frame):
         def keycall3(event):
             show_pinyin()
 
-        LabelK = ttk.Label(self, text=self.kanji.get())
-        LabelP = ttk.Label(self, text=self.pinyin.get())
-        LabelM = ttk.Label(self, text=self.mean.get())
-        LabelK.grid(row=0, column=1)
-        LabelP.grid(row=1, column=1)
-        LabelM.grid(row=2, column=1)
-
         def show_kanji():
-            self.kanji.set(vocab_list[ord][0])
-            # LabelK = ttk.Label(self, text=kanji.get())
-            # LabelK.grid(row=0, column=1)
+            kanji.set(vocab_list[ord][0])
+            LabelK = ttk.Label(self, text=kanji.get())
+            LabelK.grid(row=0, column=1)
 
         def show_pinyin():
-            self.pinyin.set(vocab_list[ord][1])
-            # LabelP = ttk.Label(self, text=pinyin.get())
-            # LabelP.grid(row=1, column=1)
+            pinyin.set(vocab_list[ord][1])
+            LabelP = ttk.Label(self, text=pinyin.get())
+            LabelP.grid(row=1, column=1)
 
         def show_mean():
-            self.mean.set(vocab_list[ord][2])
-            # LabelM = ttk.Label(self, text=mean.get())
-            # LabelM.grid(row=2, column=1)
+            mean.set(vocab_list[ord][2])
+            LabelM = ttk.Label(self, text=mean.get())
+            LabelM.grid(row=2, column=1)
 
         def next():
-            self.kanji.set(' ')
-            self.pinyin.set(' ')
-            self.mean.set(' ')
-            next_sub(ord)
+
+            kanji.set(' ')
+            pinyin.set(' ')
+            mean.set(' ')
+            ord = next_sub(ord)
+            print(ord)
+            print(kanji)
+            print(pinyin)
+            print(mean)
+
+        def next_sub(x):
+        x += 1
+
+        if(x == len(vocab_list)):
+            ret = tk.messagebox.showinfo("お疲れさまでした", "終了しました")
+
+            if ret == ok:
+                master.switch_frame(StartPage)
+
+        return x
 
         ttk.Button(self, text="OPEN", command=lambda: show_kanji()
                    ).grid(row=0, column=2)
