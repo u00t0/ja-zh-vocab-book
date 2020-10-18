@@ -17,22 +17,12 @@ def file_read():
     fTyp = [("", "*")]
     iDir = './imported_csv'
     # ファイル選択ダイアログの表示
-    print("OK1")
     filename = tkinter.filedialog.askopenfilename(
         filetypes=fTyp, initialdir=iDir)
-    print("OK2")
     filename = re.search('\/imported_csv\/.*', filename)
-    print(filename)
-    print("OK3")
     filename = re.sub('\/imported_csv\/', '', filename.group())
-    print(filename)
-    print("OK4")
     filename = re.sub('\.csv', '', filename)
-    print(filename)
-    print("OK5")
     vocab_list, random_order = function.csv_shuffle_read(filename)
-    print('fread')
-    print(vocab_list)
 
 
 class SampleApp(tk.Tk):
@@ -40,6 +30,7 @@ class SampleApp(tk.Tk):
         tk.Tk.__init__(self)
         self._frame = None
         self.geometry("640x360")
+        self.resizable(0, 0)
         self.title("Test")
         self.switch_frame(StartPage)
 
@@ -49,7 +40,6 @@ class SampleApp(tk.Tk):
             self._frame.destroy()
         self._frame = new_frame
         self._frame.grid()
-        print(vocab_list)
 
 
 class StartPage(tk.Frame):
@@ -81,11 +71,15 @@ class StartPage(tk.Frame):
         ).grid(row=0, column=1)
         ttk.Label(
             self,
-            text='勉強をはじめる'
+            text='勉強をはじめる',
+            font=('Helvetica', 18),
+            relief="groove"
         ).grid(row=1, column=0)
         ttk.Label(
             self,
-            text='単語帳を作る'
+            text='単語帳を作る',
+            font=('Helvetica', 18),
+            relief="groove"
         ).grid(row=1, column=1)
 
 
@@ -93,10 +87,9 @@ class PagePrp(tk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        ttk.Button(self, text="単語帳データを選ぶ",
-                   command=lambda: file_read()).grid(row=0, column=0)
-        print('prp')
-        print(vocab_list)
+
+        tk.Button(self, text="単語帳を選ぶ", font=('Helvetica', 18),
+                  command=lambda: file_read()).grid(row=0, column=0)
         ttk.Button(self, text="Go to Next", command=lambda: master.switch_frame(
             PageAns)).grid(row=1, column=0)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
@@ -109,19 +102,19 @@ class PageAns(tk.Frame):
         print('Ans')
         print(vocab_list)
         ttk.Frame.configure(self)
-        print('Ans')
-        print(vocab_list)
         ttk.Label(self, text="漢字").grid(row=0, column=0)
         ttk.Label(self, text="拼音").grid(row=1, column=0)
         ttk.Label(self, text="和訳").grid(row=2, column=0)
 
         ord = 0
-        print('Ans')
-        print(vocab_list)
 
         kanji = tk.StringVar()
         pinyin = tk.StringVar()
         mean = tk.StringVar()
+
+        kanji.set(' ')
+        pinyin.set(' ')
+        mean.set(' ')
 
         def show_kanji():
             kanji.set(vocab_list[ord][0])
@@ -139,9 +132,9 @@ class PageAns(tk.Frame):
             LabelM.grid(row=2, column=1)
 
         def next():
-            kanji.set('')
-            pinyin.set('')
-            mean.set('')
+            kanji.set(' ')
+            pinyin.set(' ')
+            mean.set(' ')
             ord += 1
 
         def keycall1(event):
@@ -167,15 +160,15 @@ class PageAns(tk.Frame):
         ttk.Button(self, text="OPEN", command=lambda: show_mean()
                    ).grid(row=2, column=2)
 
-        self.bind("<Z>", keycall1)
-        self.bind("<X>", keycall2)
-        self.bind("<C>", keycall3)
+        # self.bind("<Z>", keycall1)
+        # self.bind("<X>", keycall2)
+        # self.bind("<C>", keycall3)
 
         ttk.Button(self, text="Next", command=lambda: next()
-                   ).grid(row=3, column=3)
+                   ).grid(row=2, column=3)
 
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=3, column=4)
+            StartPage)).grid(row=4, column=1, columnspan=2)
 
 
 class SetChar(tk.Frame):
@@ -184,9 +177,9 @@ class SetChar(tk.Frame):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
         ttk.Label(self, text="単語帳制作", font=(
-            'Helvetica', 18, "bold")).grid(row=0, column=0)
+            'Helvetica', 18, "bold")).grid(row=0, column=0, columnspan=2)
         ttk.Label(self, text="漢字を入力してください", font=(
-            'Helvetica', 18, "bold")).grid(row=1, column=0)
+            'Helvetica', 18, "bold")).grid(row=1, column=0, columnspan=2)
 
         var = tk.StringVar()
 
@@ -205,13 +198,13 @@ class SetChar(tk.Frame):
             master.switch_frame(CheckPinyin)
 
         ttk.Entry(self, textvariable=var,
-                  width=20).grid(row=1, column=1, pady=10)
-        ttk.Button(self, text="漢字登録完了",
-                   command=lambda: move_to_pinyin()).grid(row=4, column=1)
+                  width=20).grid(row=2, column=0, pady=10, columnspan=2)
         ttk.Button(self, text="次の単語",
-                   command=lambda: next_vocab()).grid(row=4, column=2)
+                   command=lambda: next_vocab()).grid(row=3, column=0)
+        ttk.Button(self, text="漢字登録完了",
+                   command=lambda: move_to_pinyin()).grid(row=3, column=1)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=4, column=3)
+            StartPage)).grid(row=4, column=0, columnspan=2)
 
 
 class CheckPinyin(tk.Frame):
@@ -226,11 +219,11 @@ class CheckPinyin(tk.Frame):
         var.set(num_pinyin)
 
         ttk.Label(self, text="単語帳制作", font=(
-            'Helvetica', 18, "bold")).grid(row=0, column=0)
-        ttk.Label(self, text="ピンインが間違っていれば修正してください", font=(
-            'Helvetica', 18, "bold")).grid(row=1, column=0)
+            'Helvetica', 18, "bold")).grid(row=0, column=0, columnspan=2)
+        ttk.Label(self, text="拼音を修正してください", font=(
+            'Helvetica', 18, "bold")).grid(row=1, column=0, columnspan=2)
         ttk.Label(self, text=vocab_list[index][0] + ': ' + pinyin, font=(
-            'Helvetica', 18, "bold")).grid(row=2, column=0)
+            'Helvetica', 18, "bold")).grid(row=2, column=0, columnspan=2)
 
         def next_vocab():
             global index
@@ -243,14 +236,15 @@ class CheckPinyin(tk.Frame):
             vocab_list[index].append(var.get())
             index = 0
             master.switch_frame(InputMeaning)
+
         ttk.Entry(self, textvariable=var,
-                  width=20).grid(row=1, column=1, pady=10)
-        ttk.Button(self, text="OK", command=lambda: next_vocab()
-                   ).grid(row=4, column=1)
+                  width=20).grid(row=3, column=0, columnspan=2)
+        ttk.Button(self, text="修正不要", command=lambda: next_vocab()
+                   ).grid(row=4, column=0)
         ttk.Button(self, text="修正したい", command=lambda: move_to_pinyin()
-                   ).grid(row=4, column=3)
+                   ).grid(row=4, column=1)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=4, column=2)
+            StartPage)).grid(row=5, column=0, columnspan=2)
 
 
 class InputMeaning(tk.Frame):
@@ -262,11 +256,11 @@ class InputMeaning(tk.Frame):
         var = tk.StringVar()
 
         ttk.Label(self, text="単語帳制作", font=(
-            'Helvetica', 18, "bold")).grid(row=0, column=0)
-        ttk.Label(self, text="日本語を入力してください", font=(
-            'Helvetica', 18, "bold")).grid(row=1, column=0)
+            'Helvetica', 18, "bold")).grid(row=0, column=0, columnspan=2)
+        ttk.Label(self, text="和訳を入力してください", font=(
+            'Helvetica', 18, "bold")).grid(row=1, column=0, columnspan=2)
         ttk.Label(self, text=vocab_list[index][0] + ': ' + pinyin, font=(
-            'Helvetica', 18, "bold")).grid(row=2, column=0)
+            'Helvetica', 18, "bold")).grid(row=2, column=0, columnspan=2)
 
         def next_vocab():
             global index
@@ -280,17 +274,16 @@ class InputMeaning(tk.Frame):
             index = 0
             master.switch_frame(StartPage)
         ttk.Entry(self, textvariable=var,
-                  width=20).grid(row=1, column=1, pady=10)
+                  width=20).grid(row=1, column=1, pady=10, columnspan=2)
         ttk.Button(self, text="OK", command=lambda: next_vocab()
                    ).grid(row=4, column=1)
         ttk.Button(self, text="修正したい", command=lambda: move_to_pinyin()
                    ).grid(row=4, column=3)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
-            StartPage)).grid(row=4, column=2)
-
-# 登録したいたんごを入力してください*n→サジェスト付きで一つずつ決定を
+            StartPage)).grid(row=4, column=2, columnspan=2)
 
 
 if __name__ == "__main__":
     app = SampleApp()
+    app.grid_anchor(tk.CENTER)
     app.mainloop()
