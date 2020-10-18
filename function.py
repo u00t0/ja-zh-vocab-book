@@ -8,9 +8,10 @@ from gtts import gTTS
 
 
 def no_num_pinyin(num_pinyin):  # str
+    re.findall("\D*\d", num_pinyin)
     pinyin = num_pinyin
     return pinyin
-    
+
 
 
 def csv_to_mp3(filename):  # str

@@ -98,15 +98,19 @@ class PagePrp(tk.Frame):
 
 class PageAns(tk.Frame):
     def __init__(self, master):
+        global index
         ttk.Frame.__init__(self, master)
-        print('Ans')
-        print(vocab_list)
         ttk.Frame.configure(self)
+
+        if(index == len(vocab_list)):
+            ret = tk.messagebox.showinfo("お疲れさまでした", "終了しました")
+
+            if ret == ok:
+                master.switch_frame(StartPage)
         ttk.Label(self, text="漢字").grid(row=0, column=0)
         ttk.Label(self, text="拼音").grid(row=1, column=0)
         ttk.Label(self, text="和訳").grid(row=2, column=0)
 
-        ord = 0
 
         kanji = tk.StringVar()
         pinyin = tk.StringVar()
@@ -125,49 +129,28 @@ class PageAns(tk.Frame):
 
         def keycall1(event):
             show_kanji()
-
         def keycall2(event):
             show_pinyin()
-
         def keycall3(event):
             show_pinyin()
 
         def show_kanji():
-            kanji.set(vocab_list[ord][0])
+            kanji.set(vocab_list[index][0])
             LabelK = ttk.Label(self, text=kanji.get())
             LabelK.grid(row=0, column=1)
-
         def show_pinyin():
-            pinyin.set(vocab_list[ord][1])
+            pinyin.set(vocab_list[index][1])
             LabelP = ttk.Label(self, text=pinyin.get())
             LabelP.grid(row=1, column=1)
-
         def show_mean():
-            mean.set(vocab_list[ord][2])
+            mean.set(vocab_list[index][2])
             LabelM = ttk.Label(self, text=mean.get())
             LabelM.grid(row=2, column=1)
 
-        def next():
-
-            kanji.set(' ')
-            pinyin.set(' ')
-            mean.set(' ')
-            ord = next_sub(ord)
-            print(ord)
-            print(kanji)
-            print(pinyin)
-            print(mean)
-
-        def next_sub(x):
-        x += 1
-
-        if(x == len(vocab_list)):
-            ret = tk.messagebox.showinfo("お疲れさまでした", "終了しました")
-
-            if ret == ok:
-                master.switch_frame(StartPage)
-
-        return x
+        def next_vocab():
+            global index
+            index += 1
+            master.switch_frame(PageAns)
 
         ttk.Button(self, text="OPEN", command=lambda: show_kanji()
                    ).grid(row=0, column=2)
@@ -180,9 +163,8 @@ class PageAns(tk.Frame):
         # self.bind("<X>", keycall2)
         # self.bind("<C>", keycall3)
 
-        ttk.Button(self, text="Next", command=lambda: next()
+        ttk.Button(self, text="Next", command=lambda: next_vocab()
                    ).grid(row=3, column=2)
-
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
             StartPage)).grid(row=4, column=0, columnspan=self.grid_size()[0], pady=10)
 
