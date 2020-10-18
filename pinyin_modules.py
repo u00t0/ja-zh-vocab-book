@@ -1,32 +1,43 @@
 import pinyin as pin
 import re
 
+
 def no_num_pinyin(num_pinyin):
     pinyin = ''
     pinyin_list = re.findall("\D*\d", num_pinyin)
     for pinyin_piece in pinyin_list:
         if 'a' in pinyin_piece:
-            pinyin_piece = pinyin_change('a', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('a', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'e' in pinyin_piece:
-            pinyin_piece = pinyin_change('e', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('e', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'o' in pinyin_piece:
-            pinyin_piece = pinyin_change('o', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('o', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'iu' in pinyin_piece:
-            pinyin_piece = pinyin_change('u', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('u', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'ui' in pinyin_piece:
-            pinyin_piece = pinyin_change('i', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('i', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'i' in pinyin_piece:
-            pinyin_piece = pinyin_change('i', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('i', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'u' in pinyin_piece:
-            pinyin_piece = pinyin_change('u', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('u', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         elif 'v' in pinyin_piece:
-            pinyin_piece = pinyin_change('v', re.search('\d', pinyin_piece).group(), pinyin_piece)
+            pinyin_piece = pinyin_change('v', re.search(
+                '\d', pinyin_piece).group(), pinyin_piece)
         pinyin += pinyin_piece
     return pinyin
+
 
 def pinyin_change(char, num, string):
     string = re.sub(num, '', string)
     return re.sub(char, num_to_pinyin(char, num), string)
+
 
 def num_to_pinyin(char, num):
     if char == 'a':
