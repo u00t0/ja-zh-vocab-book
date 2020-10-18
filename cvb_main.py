@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import Image, ImageTk
 import tkinter.filedialog
 import pinyin as pin
@@ -88,11 +89,14 @@ class PagePrp(tk.Frame):
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
 
-        tk.Button(self, text="単語帳を選ぶ", font=('Helvetica', 18),
-                  command=lambda: file_read()).grid(row=0, column=0)
-        ttk.Button(self, text="Go to Next", command=lambda: master.switch_frame(
+        st = ttk.Style()
+        st.configure('my.TButton',  font=('Helvetica', 18))
+
+        ttk.Button(self, text="単語帳を選ぶ", style='my.TButton',
+                   command=lambda: file_read()).grid(row=0, column=0)
+        ttk.Button(self, text="Go to Next", style='my.TButton', command=lambda: master.switch_frame(
             PageAns)).grid(row=1, column=0)
-        ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
+        ttk.Button(self, text="Go back to start page", style='my.TButton', command=lambda: master.switch_frame(
             StartPage)).grid(row=2, column=0, pady=10)
 
 
@@ -103,14 +107,14 @@ class PageAns(tk.Frame):
         ttk.Frame.configure(self)
 
         if(index == len(vocab_list)):
-            ret = tk.messagebox.showinfo("お疲れさまでした", "終了しました")
+            ret = messagebox.showinfo("お疲れさまでした", "終了しました")
 
-            if ret == ok:
+            if ret == "ok":
                 master.switch_frame(StartPage)
+
         ttk.Label(self, text="漢字").grid(row=0, column=0)
         ttk.Label(self, text="拼音").grid(row=1, column=0)
         ttk.Label(self, text="和訳").grid(row=2, column=0)
-
 
         kanji = tk.StringVar()
         pinyin = tk.StringVar()
@@ -129,8 +133,10 @@ class PageAns(tk.Frame):
 
         def keycall1(event):
             show_kanji()
+
         def keycall2(event):
             show_pinyin()
+
         def keycall3(event):
             show_pinyin()
 
@@ -138,10 +144,12 @@ class PageAns(tk.Frame):
             kanji.set(vocab_list[index][0])
             LabelK = ttk.Label(self, text=kanji.get())
             LabelK.grid(row=0, column=1)
+
         def show_pinyin():
             pinyin.set(vocab_list[index][1])
             LabelP = ttk.Label(self, text=pinyin.get())
             LabelP.grid(row=1, column=1)
+
         def show_mean():
             mean.set(vocab_list[index][2])
             LabelM = ttk.Label(self, text=mean.get())
@@ -244,11 +252,11 @@ class CheckPinyin(tk.Frame):
         if index > len(vocab_list):
             move_to_pinyin()
         ttk.Entry(self, textvariable=var,
-            width=20).grid(row=3, column=0, columnspan=2)
+                  width=20).grid(row=3, column=0, columnspan=2)
         ttk.Button(self, text="修正不要", command=lambda: next_vocab()
-            ).grid(row=4, column=0)
+                   ).grid(row=4, column=0)
         ttk.Button(self, text="修正したい", command=lambda: move_to_pinyin()
-            ).grid(row=4, column=1)
+                   ).grid(row=4, column=1)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
             StartPage)).grid(row=5, column=0, columnspan=2)
 
@@ -273,6 +281,7 @@ class InputMeaning(tk.Frame):
             vocab_list[index].append(var.get())
             index += 1
             master.switch_frame(InputMeaning)
+
         def save_and_move_to_start():
             global index
             vocab_list[index].append(var.get())
@@ -281,13 +290,14 @@ class InputMeaning(tk.Frame):
         if index > len(vocab_list):
             save_and_move_to_start()
         ttk.Entry(self, textvariable=var,
-            width=20).grid(row=1, column=1, pady=10, columnspan=2)
+                  width=20).grid(row=1, column=1, pady=10, columnspan=2)
         ttk.Button(self, text="OK", command=lambda: next_vocab()
-            ).grid(row=4, column=1)
+                   ).grid(row=4, column=1)
         ttk.Button(self, text="修正したい", command=lambda: save_and_move_to_start()
-            ).grid(row=4, column=3)
+                   ).grid(row=4, column=3)
         ttk.Button(self, text="Go back to start page", command=lambda: master.switch_frame(
             StartPage)).grid(row=4, column=2, columnspan=2, pady=10)
+
 
 class InputFinish(tk.Frame):
     def __init__(self, master):
