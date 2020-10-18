@@ -6,14 +6,14 @@ from playsound import playsound
 from gtts import gTTS
 
 
-def csv_to_mp3(filename):
-    with open('./imported_csv/'+filename+'.csv', 'r', encoding='utf-8_sig') as f:
-        reader = csv.reader(f)
-        vocab_list = [row for row in reader]
-        os.makedirs('./pronounce/'+filename)
-        for vocab_num in range(len(vocab_list)):
-            tts = gTTS(text=vocab_list[vocab_num]['zh_char'], lang='zh-cn')
-            tts.save('./pronounce/'+filename+'/'+str(vocab_num)+'.mp3')
+# def csv_to_mp3(filename):
+#     with open('./imported_csv/'+filename+'.csv', 'r', encoding='utf-8_sig') as f:
+#         reader = csv.reader(f)
+#         vocab_list = [row for row in reader]
+#         os.makedirs('./pronounce/'+filename)
+#         for vocab_num in range(len(vocab_list)):
+#             tts = gTTS(text=vocab_list[vocab_num][0], lang='zh-cn')
+#             tts.save('./pronounce/'+filename+'/'+str(vocab_num)+'.mp3')
 
 
 def csv_shuffle_read(filename):
