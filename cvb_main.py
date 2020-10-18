@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import tkinter.filedialog
 import pinyin as pin
 import function
+import pinyin_modules
 import re
 
 vocab_list = []
@@ -226,14 +227,14 @@ class CheckPinyin(tk.Frame):
         global vocab_list, index
         ttk.Frame.__init__(self, master)
         ttk.Frame.configure(self)
-        pinyin = pin.get(vocab_list[index][0])
         num_pinyin = pin.get(vocab_list[index][0], format='numerical')
+        pinyin = pinyin_modules.no_num_pinyin(num_pinyin)
         var = tk.StringVar()
         var.set(num_pinyin)
 
         ttk.Label(self, text="単語帳制作", font=(
             'Helvetica', 18, "bold")).grid(row=0, column=0, columnspan=2)
-        ttk.Label(self, text="拼音を修正してください", font=(
+        ttk.Label(self, text="拼音が間違っていれば修正してください", font=(
             'Helvetica', 18, "bold")).grid(row=1, column=0, columnspan=2)
         ttk.Label(self, text=vocab_list[index][0] + ': ' + pinyin, font=(
             'Helvetica', 18, "bold")).grid(row=2, column=0, columnspan=2)
