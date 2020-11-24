@@ -41,6 +41,8 @@ def pinyin_change(char, num, string):
 
 def num_to_pinyin(char, num):
     if char == 'a':
+        if num == '0':
+            return 'a'
         if num == '1':
             return 'ā'
         if num == '2':
@@ -50,6 +52,8 @@ def num_to_pinyin(char, num):
         if num == '4':
             return 'à'
     if char == 'i':
+        if num == '0':
+            return 'i'
         if num == '1':
             return 'ī'
         if num == '2':
@@ -59,6 +63,8 @@ def num_to_pinyin(char, num):
         if num == '4':
             return 'ì'
     if char == 'u':
+        if num == '0':
+            return 'u'
         if num == '1':
             return 'ū'
         if num == '2':
@@ -68,6 +74,8 @@ def num_to_pinyin(char, num):
         if num == '4':
             return 'ù'
     if char == 'e':
+        if num == '0':
+            return 'e'
         if num == '1':
             return 'ē'
         if num == '2':
@@ -77,6 +85,8 @@ def num_to_pinyin(char, num):
         if num == '4':
             return 'è'
     if char == 'o':
+        if num == '0':
+            return 'o'
         if num == '1':
             return 'ō'
         if num == '2':
@@ -86,6 +96,8 @@ def num_to_pinyin(char, num):
         if num == '4':
             return 'ò'
     if char == 'v':
+        if num == '0':
+            return 'ü'
         if num == '1':
             return 'ǖ'
         if num == '2':
